@@ -1,0 +1,6 @@
+radar:
+  role: ${APP_ROLE:api}
+
+spring:
+  application:
+    name: supply-chain-radar
