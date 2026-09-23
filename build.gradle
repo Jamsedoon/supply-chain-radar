@@ -39,4 +39,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+		exceptionFormat "full" //when a test fails, you see the full error message instead of a one-line summary.
+	}
 }
