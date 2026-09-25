@@ -27,8 +27,15 @@ public interface NameComparator {
     /**
      * Scores how similar two names are.
      *
-     * <p>Higher means more alike. The result must be the same whichever order
-     * the names are given in, and must be {@code 1.0} for identical input.
+     * <p>Higher means stronger evidence. Two rules are required of every
+     * implementation: the score must be between {@code 0.0} and {@code 1.0},
+     * and it must be the same whichever order the two names are given in.
+     *
+     * <p>Identical input is deliberately <em>not</em> required to score
+     * {@code 1.0}. A similarity comparator (edit distance, Jaro-Winkler)
+     * naturally scores identical names as {@code 1.0}. A transformation
+     * comparator asks "is this a modified form of that?" and correctly scores
+     * identical names as {@code 0.0}, because no modification took place.
      *
      * <p>Most implementations expect normalized names (see {@link Normalizer}).
      * A comparator that needs the raw name must say so in its own documentation.

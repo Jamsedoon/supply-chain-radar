@@ -18,8 +18,9 @@ class NameComparatorContractTest {
     /** Every comparator implementation. Add new ones here. */
     private static List<NameComparator> allComparators() {
         return List.of(
-            // SC-03b: new EditDistanceComparator(), new JaroWinklerComparator(),
-            //         new KeyboardAdjacencyComparator(),
+            new EditDistanceComparator(),
+            new JaroWinklerComparator(),
+            new KeyboardAdjacencyComparator()
             // SC-03c: new HomoglyphComparator(), new DelimiterComparator()
         );
     }
