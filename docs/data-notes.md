@@ -62,6 +62,16 @@ only patches gaps already known.
 5. **Downloads are a noisy popularity proxy.** CI pipelines and registry mirrors
    inflate counts, so this measures automated installs as much as human adoption.
 
+## Open design question: raw vs normalized comparator input
+
+Four comparators take normalized names. `DelimiterComparator` takes raw names,
+because normalization is what erases the difference it detects.
+
+Currently the engine special-cases it by name. A cleaner option is a
+`requiresRawInput()` method on the `NameComparator` interface. Deferred until a
+second comparator needs raw input — one exception does not justify changing the
+interface for all five.
+
 ## Regenerating
     node tools/fetch-reference-packages.mjs
 

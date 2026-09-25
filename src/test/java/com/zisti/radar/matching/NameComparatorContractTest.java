@@ -20,8 +20,9 @@ class NameComparatorContractTest {
         return List.of(
             new EditDistanceComparator(),
             new JaroWinklerComparator(),
-            new KeyboardAdjacencyComparator()
-            // SC-03c: new HomoglyphComparator(), new DelimiterComparator()
+            new KeyboardAdjacencyComparator(),
+            new HomoglyphComparator(),
+            new DelimiterComparator()
         );
     }
 
