@@ -76,3 +76,19 @@ interface for all five.
     node tools/fetch-reference-packages.mjs
 
 Takes 20-25 minutes. Deliberately rate-limited.
+
+## Known simplification: no negative weights
+
+The full Fellegi-Sunter model assigns a negative weight when a comparator
+disagrees: log2((1-m) / (1-u)). This implementation treats disagreement as zero
+evidence instead.
+
+The reason is the shape of this particular problem. Most package pairs disagree
+on most comparators, so negative weights would push nearly every pair far below
+any useful threshold and the cutoff would stop discriminating. Positive-only
+evidence keeps the score interpretable as "how much reason is there to suspect
+this," which is also what the dashboard needs to display.
+
+The trade-off is that a pair agreeing weakly on one clue and disagreeing on
+four scores the same as a pair that only had one clue evaluated. Revisit if
+precision plateaus during tuning.
