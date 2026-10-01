@@ -92,3 +92,39 @@ this," which is also what the dashboard needs to display.
 The trade-off is that a pair agreeing weakly on one clue and disagreeing on
 four scores the same as a pair that only had one clue evaluated. Revisit if
 precision plateaus during tuning.
+
+## The truth set
+
+`src/test/resources/truth-set.csv` — 60 labelled package pairs used to measure
+and tune the matching engine, and to estimate the Fellegi-Sunter parameters in
+SC-31.
+
+### Composition
+- 30 typosquats: 6 documented npm incidents, 24 constructed cases covering
+  transposition, dropped letters, keyboard slips, homoglyphs, and delimiter
+  variants.
+- 30 legitimate pairs: mostly official companion packages sharing a prefix
+  (`react-dom` / `react`), plus scoped siblings, versioned successors, and short
+  names that sit close by edit distance.
+
+### Design
+The legitimate rows carry more weight than the squat rows. Flagging names that
+look alike is easy; not flagging `react-dom` when watching for fakes of `react`
+is the actual problem, and it is the same false-positive problem that dominates
+real alerting systems.
+
+Coverage is asserted in `TruthSetTest`: the set must contain at least one case
+that only the homoglyph comparator can catch and one that only the delimiter
+comparator can catch. Without those rows, two of the five comparators could be
+deleted with no visible effect on measured accuracy.
+
+### Known limitations
+1. **Constructed cases dominate.** Only 6 of 30 squat rows are documented
+   incidents. The rest are plausible constructions, so measured recall reflects
+   coverage of attack *patterns* rather than of observed attacks.
+2. **The legitimate rows are unbalanced.** 18 of 30 are family-prefix pairs.
+   Precision is therefore measured mostly against one kind of lookalike.
+3. **Labelled by one person.** No second reviewer, so a mislabelled row would go
+   unnoticed. A production system would need agreement between annotators.
+4. **60 rows is small.** Enough to tune against and to spot gross errors; not
+   enough for confidence intervals on the reported figures.

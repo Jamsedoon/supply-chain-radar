@@ -1,0 +1,61 @@
+candidate,reference,is_squat,category,note
+crossenv,cross-env,true,real_attack,removed from npm after ~700 installs
+mongose,mongoose,true,real_attack,dropped letter
+jquery-min,jquery,true,real_attack,fake minified variant
+babelcli,babel-cli,true,real_attack,missing delimiter
+noode-sass,node-sass,true,real_attack,doubled letter
+d3.js,d3,true,real_attack,extension appended
+lodahs,lodash,true,transposition,adjacent letters swapped
+momnet,moment,true,transposition,adjacent letters swapped
+expres,express,true,dropped_letter,one s removed
+requst,request,true,dropped_letter,vowel removed
+axois,axios,true,transposition,vowel pair swapped
+chakl,chalk,true,transposition,adjacent letters swapped
+commandr,commander,true,dropped_letter,vowel removed
+typescrip,typescript,true,dropped_letter,trailing letter removed
+webpak,webpack,true,dropped_letter,consonant removed
+prettie,prettier,true,dropped_letter,trailing letter removed
+lodqsh,lodash,true,keyboard_slip,q sits above a
+chslk,chalk,true,keyboard_slip,s sits beside a
+debig,debug,true,keyboard_slip,i sits beside u
+mysqp,mysql,true,keyboard_slip,p sits beside l
+reqct,react,true,keyboard_slip,q sits beside a
+vue-router2,vue-router,true,appended_digit,version suffix appended
+1odash,lodash,true,homoglyph,digit one for letter l
+l0dash,lodash,true,homoglyph,digit zero for letter o
+rnoment,moment,true,homoglyph,rn reads as m
+reqct-dom,react-dom,true,keyboard_slip,squat of a compound name
+eslnt,eslint,true,dropped_letter,vowel removed
+puppeter,puppeteer,true,dropped_letter,doubled vowel reduced
+socketio,socket.io,true,delimiter,punctuation removed
+nodefetch,node-fetch,true,delimiter,hyphen removed
+react-dom,react,false,family_prefix,official companion package
+react-router,react,false,family_prefix,official companion package
+react-scripts,react,false,family_prefix,official tooling package
+lodash.merge,lodash,false,scoped_sibling,official single-method build
+lodash.debounce,lodash,false,scoped_sibling,official single-method build
+express-session,express,false,family_prefix,official middleware
+body-parser,express,false,unrelated_ecosystem,commonly paired but distinct
+babel-core,babel-cli,false,family_prefix,both official babel packages
+eslint-plugin-react,eslint,false,family_prefix,official plugin naming convention
+eslint-config-airbnb,eslint,false,family_prefix,official config naming convention
+typescript-eslint,typescript,false,family_prefix,legitimate integration package
+node-fetch,isomorphic-fetch,false,similar_purpose,two real fetch libraries
+debug,debounce,false,short_similar,unrelated despite shared prefix
+chalk,chalk-animation,false,family_prefix,legitimate extension
+mysql,mysql2,false,versioned_sibling,mysql2 is a real successor package
+vue,vuex,false,family_prefix,official state management library
+webpack-cli,webpack,false,family_prefix,official companion tooling
+rollup,rollup-plugin-terser,false,family_prefix,official plugin convention
+moment,moment-timezone,false,family_prefix,official companion package
+axios,axios-retry,false,family_prefix,legitimate wrapper library
+uuid,uuidv4,false,versioned_sibling,both real packages
+async,async-mutex,false,family_prefix,unrelated but similar naming
+jest,jest-cli,false,family_prefix,official companion package
+socket.io,socket.io-client,false,family_prefix,official client library
+redux,react-redux,false,family_prefix,official bindings package
+classnames,classcat,false,similar_purpose,two real class-name utilities
+dotenv,dotenv-expand,false,family_prefix,official companion package
+yargs,yargs-parser,false,family_prefix,official companion package
+sharp,sharp-cli,false,family_prefix,legitimate wrapper
+prettier,prettier-eslint,false,family_prefix,legitimate integration package
