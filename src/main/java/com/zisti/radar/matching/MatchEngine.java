@@ -50,7 +50,9 @@ public final class MatchEngine {
                 new JaroWinklerComparator(),
                 new KeyboardAdjacencyComparator(),
                 new HomoglyphComparator(),
-                new DelimiterComparator()),
+                new DelimiterComparator(),
+                new FamilyPrefixComparator()
+            ),
             MatchWeights.loadDefault());
     }
 

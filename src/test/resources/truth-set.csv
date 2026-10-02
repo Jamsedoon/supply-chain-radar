@@ -36,7 +36,7 @@ lodash.merge,lodash,false,scoped_sibling,official single-method build
 lodash.debounce,lodash,false,scoped_sibling,official single-method build
 express-session,express,false,family_prefix,official middleware
 body-parser,express,false,unrelated_ecosystem,commonly paired but distinct
-babel-core,babel-cli,false,family_prefix,both official babel packages
+babel-core,babel-cli,false,sibling_suffix,two official packages sharing a family prefix
 eslint-plugin-react,eslint,false,family_prefix,official plugin naming convention
 eslint-config-airbnb,eslint,false,family_prefix,official config naming convention
 typescript-eslint,typescript,false,family_prefix,legitimate integration package
@@ -59,3 +59,6 @@ dotenv,dotenv-expand,false,family_prefix,official companion package
 yargs,yargs-parser,false,family_prefix,official companion package
 sharp,sharp-cli,false,family_prefix,legitimate wrapper
 prettier,prettier-eslint,false,family_prefix,legitimate integration package
+eslint-plugin-import,eslint-plugin-react,false,sibling_suffix,two official eslint plugins
+babel-preset-env,babel-preset-react,false,sibling_suffix,two official babel presets
+jest-environment-node,jest-environment-jsdom,false,sibling_suffix,two official jest environments

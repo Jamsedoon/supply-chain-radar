@@ -110,8 +110,8 @@ class MatchEngineTest {
         @DisplayName("every comparator appears in the evidence, even when silent")
         void everyComparatorReports() {
             MatchResult result = engine.score("webpack", "lodash");
-            assertEquals(5, result.evidence().size(),
-                "all five comparators must report, so the explanation has no gaps");
+            assertEquals(6, result.evidence().size(),
+                "all six comparators must report, so the explanation has no gaps");
         }
 
         @Test

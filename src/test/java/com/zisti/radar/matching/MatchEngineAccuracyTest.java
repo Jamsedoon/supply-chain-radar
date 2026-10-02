@@ -90,17 +90,21 @@ class MatchEngineAccuracyTest {
     }
 
     @Test
-    @DisplayName("precision is above the current floor")
+    @DisplayName("precision stays above the tuned floor")
     void precisionFloor() {
-        assertTrue(scorecard.precision() >= 0.50,
-            "precision too low to be useful: " + scorecard.summary());
+        // 0.853 on the original 60 rows; 0.824 after three sibling_suffix rows
+        // were added in SC-05c. The floor sits below that, not at it.
+        assertTrue(scorecard.precision() >= 0.78,
+            "precision regressed: " + scorecard.summary());
     }
 
     @Test
-    @DisplayName("recall is above the current floor")
+    @DisplayName("recall stays above the tuned floor")
     void recallFloor() {
-        assertTrue(scorecard.recall() >= 0.50,
-            "recall too low to be useful: " + scorecard.summary());
+       // Two known misses: d3.js/d3 and jquery-min/jquery. Both need the
+        // popularity signal. See docs/accuracy.md.
+        assertTrue(scorecard.recall() >= 0.88,
+            "recall regressed: " + scorecard.summary());
     }
 
     @Test

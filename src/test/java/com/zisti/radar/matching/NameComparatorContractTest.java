@@ -22,7 +22,8 @@ class NameComparatorContractTest {
             new JaroWinklerComparator(),
             new KeyboardAdjacencyComparator(),
             new HomoglyphComparator(),
-            new DelimiterComparator()
+            new DelimiterComparator(),
+            new FamilyPrefixComparator()
         );
     }
 
