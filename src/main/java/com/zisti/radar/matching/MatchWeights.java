@@ -61,6 +61,17 @@ public final class MatchWeights {
         return new MatchWeights(loaded);
     }
 
+    /**
+     * Builds weights from an in-memory property set.
+     *
+     * <p>Used to run the engine with parameters estimated from labelled data
+     * without replacing the shipped configuration, so both can be measured in
+     * one pass.
+     */
+    public static MatchWeights fromProperties(Properties properties) {
+        return new MatchWeights(properties);
+    }
+
     /** The total evidence, in bits, required to raise an alert. */
     public double threshold() {
         return threshold;

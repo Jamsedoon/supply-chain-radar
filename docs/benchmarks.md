@@ -48,3 +48,10 @@ added rows are sibling packages in the same family (`babel-preset-env` against
 `babel-preset-react`), a pattern the original set contained only once.
 
 All six remaining failures trace to one limitation — see `docs/accuracy.md`.
+
+### Parameters learned from the truth set (SC-31)
+
+At each weight set's own best threshold, hand-estimated and learned parameters
+scored identically: 100% precision, 83.3% recall, F1 90.9%. The hand estimates
+were kept. See `docs/accuracy.md` for the analysis and for why the F1-optimal
+threshold was not adopted.
