@@ -55,3 +55,52 @@ At each weight set's own best threshold, hand-estimated and learned parameters
 scored identically: 100% precision, 83.3% recall, F1 90.9%. The hand estimates
 were kept. See `docs/accuracy.md` for the analysis and for why the F1-optimal
 threshold was not adopted.
+
+## Blocking performance
+
+Query: find reference packages similar to `lodahs` (a typosquat of `lodash`),
+across 5,000 reference packages. Measured with EXPLAIN ANALYZE on Postgres 16.
+
+| | Execution time | Rows examined | Plan |
+|---|---|---|---|
+| Sequential scan | 36.119 ms | 5,000 | `Seq Scan`, 4,996 removed by filter |
+| GIN trigram index | **1.109 ms** | 12 | `Bitmap Index Scan`, 9 heap blocks |
+
+**32.6x faster.** Both return the same 4 candidates, `lodash` ranked first.
+
+The index is `gin (normalized_name gin_trgm_ops)` from the `pg_trgm` extension.
+Candidate selection runs in the database rather than in application code, so the
+six comparators execute on ~4 candidates instead of 5,000 per package scored.
+
+## Blocking performance
+
+Postgres 16, 5,000 reference packages, GIN index on `normalized_name` using
+`gin_trgm_ops` from the `pg_trgm` extension.
+
+| Query | Plan | Rows examined | Execution time |
+|---|---|---|---|
+| `lodahs`, no index | Seq Scan | 5,000 | 36.1 ms |
+| `lodahs`, indexed | Bitmap Index Scan | 12 | **1.1 ms** |
+| `expres`, indexed (worst case) | Bitmap Index Scan | 171 | 6.8 ms |
+
+Candidate selection runs in the database, so the six comparators execute on
+4–50 candidates instead of 5,000 per package scored.
+
+### Blocking recall: a silent failure found by probing
+
+The similarity floor was initially 0.3. Probing with known squats from the truth
+set showed `momnet` (a transposition of `moment`) returning **zero** candidates:
+its trigram similarity is 0.273, just under the floor.
+
+This failure is invisible to the engine's own metrics. A squat discarded at the
+blocking stage never reaches the matching engine, so it does not register as a
+miss — end-to-end recall was lower than the reported 93.3%, with nothing
+indicating it.
+
+Floor lowered to 0.2 and verified against ten known squats, all returning the
+correct reference package. Worst-case query time rose from 1.1 ms to 6.8 ms,
+still 5x faster than a sequential scan.
+
+The mechanism behind the cost is visible in the plan: at 0.2 the index returns
+171 rows and Postgres rechecks and discards 132. A looser floor makes the index
+less selective, which is the real trade-off rather than the row count alone.
