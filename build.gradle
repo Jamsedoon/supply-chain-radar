@@ -38,9 +38,16 @@ dependencies {
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+	useJUnitPlatform {
+		// Tests that hit third-party APIs are excluded by default, so an
+		// outage or an offline laptop cannot fail an unrelated commit.
+		// Opt in with: ./gradlew test -PwithExternal
+		if (!project.hasProperty('withExternal')) {
+			excludeTags 'external'
+		}
+	}
 	testLogging {
 		events "passed", "skipped", "failed"
-		exceptionFormat "full" //when a test fails, you see the full error message instead of a one-line summary.
+		exceptionFormat "full"
 	}
 }

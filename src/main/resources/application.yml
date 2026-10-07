@@ -2,6 +2,11 @@ radar:
   role: ${APP_ROLE:api}
   queue:
     type: ${QUEUE_TYPE:memory}
+  collector:
+    batch-size: ${COLLECTOR_BATCH_SIZE:20}
+    interval-ms: ${COLLECTOR_INTERVAL_MS:60000}
+    initial-delay-ms: ${COLLECTOR_INITIAL_DELAY_MS:5000}
+  
 
 spring:
   application:
