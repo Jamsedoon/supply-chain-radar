@@ -1,5 +1,7 @@
 radar:
   role: ${APP_ROLE:api}
+  queue:
+    type: ${QUEUE_TYPE:memory}
 
 spring:
   application:
