@@ -125,3 +125,264 @@
   background: var(--low-bg);
   color: var(--low);
 }
+/* ---- layout when the evidence panel is open ---- */
+
+.page-with-panel {
+  max-width: 1440px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 24px;
+  align-items: start;
+}
+
+.main-column {
+  min-width: 0;
+}
+
+/* On narrow screens, stack the panel under the table instead. */
+@media (max-width: 960px) {
+  .page-with-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- the evidence panel ---- */
+
+.panel {
+  position: sticky;
+  top: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 20px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+.panel-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.panel-kicker {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.panel-close {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.panel-close:hover {
+  background: var(--low-bg);
+  color: var(--text);
+}
+
+.panel-heading {
+  margin: 24px 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* the two names */
+
+.pair {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 12px;
+}
+
+.pair-tag {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.pair-name {
+  font-size: 18px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.pair-vs {
+  color: var(--muted);
+  padding-bottom: 3px;
+}
+
+/* the two headline numbers */
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.stat {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--low-bg);
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-sep {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.stat-label {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* the six clues */
+
+.clues {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.clue-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.clue-label {
+  font-weight: 600;
+}
+
+.clue-bits {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.clue-for {
+  color: var(--high);
+  font-weight: 600;
+}
+
+.clue-against {
+  color: var(--good);
+  font-weight: 600;
+}
+
+.clue-none {
+  color: var(--muted);
+}
+
+.clue-track {
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: var(--low-bg);
+  overflow: hidden;
+}
+
+.clue-bar {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.clue-bar-for {
+  background: var(--high);
+}
+
+.clue-bar-against {
+  background: var(--good);
+}
+
+.clue-meaning {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* publisher and source code */
+
+.meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  margin: 24px 0 0;
+  font-size: 14px;
+}
+
+.meta dt {
+  color: var(--muted);
+}
+
+.meta dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.meta a {
+  color: var(--accent);
+}
+
+/* verdict buttons */
+
+.verdict {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.verdict-label {
+  font-size: 14px;
+}
+
+.verdict-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btn-real:not(:disabled):hover {
+  background: var(--high-bg);
+  color: var(--high);
+  border-color: var(--high);
+}
+
+.btn-noise:not(:disabled):hover {
+  background: var(--low-bg);
+}
