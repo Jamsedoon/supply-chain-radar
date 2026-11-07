@@ -2,6 +2,7 @@ radar:
   role: ${APP_ROLE:api}
   queue:
     type: ${QUEUE_TYPE:memory}
+    url: ${SQS_QUEUE_URL:}
   collector:
     batch-size: ${COLLECTOR_BATCH_SIZE:20}
     interval-ms: ${COLLECTOR_INTERVAL_MS:60000}
