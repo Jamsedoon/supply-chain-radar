@@ -1,7 +1,6 @@
 services:
   db:
-    image: postgres:16-alpine
-    container_name: radar-db
+    image: postgres:16
     environment:
       POSTGRES_DB: radar
       POSTGRES_USER: radar
@@ -13,8 +12,29 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U radar -d radar"]
       interval: 5s
-      timeout: 5s
+      timeout: 3s
       retries: 10
+
+  app:
+    build: .
+    environment:
+      APP_ROLE: all
+      DB_URL: jdbc:postgresql://db:5432/radar
+      DB_USER: radar
+      DB_PASSWORD: radar_local_only
+      COLLECTOR_INTERVAL_MS: "600000"
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./web
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
 
 volumes:
   radar-db-data:
