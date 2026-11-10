@@ -2,7 +2,7 @@
 variable "github_repo" {
   description = "GitHub repo allowed to deploy, as owner/name"
   type        = string
-  default     = "Jamsedoon/supply-chain-radar"
+  default     = "Jamsedoon@150087524/supply-chain-radar@1330188212"
 }
 
 # 1. AWS trusts login tokens from GitHub Actions.
