@@ -22,3 +22,8 @@ output "alb_dns_name" {
   description = "Public address of the backend"
   value       = aws_lb.main.dns_name
 }
+
+output "github_deploy_role_arn" {
+  description = "Role the GitHub Actions workflow assumes"
+  value       = aws_iam_role.github_deploy.arn
+}
