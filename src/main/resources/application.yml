@@ -25,3 +25,12 @@ spring:
 logging:
   level:
     com.zisti.radar: INFO
+
+management:
+  statsd:
+    metrics:
+      export:
+        enabled: ${STATSD_ENABLED:false}
+        flavor: datadog
+        host: localhost
+        port: 8125

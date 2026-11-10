@@ -9,6 +9,10 @@ import com.zisti.radar.queue.QueueClient.ReceivedMessage;
 import com.zisti.radar.storage.AlertRepository;
 import com.zisti.radar.storage.CandidateFinder;
 import com.zisti.radar.storage.CandidateFinder.Candidate;
+import io.micrometer.core.instrument.Counter;      // NEW
+import io.micrometer.core.instrument.Gauge;        // NEW
+import io.micrometer.core.instrument.MeterRegistry; // NEW
+import io.micrometer.core.instrument.Timer;        // NEW
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +38,9 @@ import org.springframework.stereotype.Service;
  *
  * <p>A message is acknowledged only after it is fully handled. If scoring throws,
  * the message is left unacknowledged so the queue can redeliver it.
+ *
+ * <p>Publishes four metrics for Datadog: queue depth, packages scored, scoring
+ * time, and alerts raised.
  */
 @Service
 @ConditionalOnExpression("'${radar.role}' == 'scorer' or '${radar.role}' == 'all'")
@@ -46,6 +53,10 @@ public class ScorerService {
     private final CandidateFinder finder;
     private final AlertRepository alerts;
 
+    private final Timer scoringTime;      // NEW
+    private final Counter packagesScored; // NEW
+    private final Counter alertsRaised;   // NEW
+
     @Value("${radar.scorer.batch-size:10}")
     private int batchSize;
 
@@ -57,10 +68,26 @@ public class ScorerService {
     @Value("${radar.scorer.popularity-ratio:0.1}")
     private double popularityRatio;
 
-    public ScorerService(QueueClient queue, CandidateFinder finder, AlertRepository alerts) {
+    public ScorerService(QueueClient queue, CandidateFinder finder, AlertRepository alerts,
+                         MeterRegistry metrics) { // NEW: metrics
         this.queue = queue;
         this.finder = finder;
         this.alerts = alerts;
+
+        // NEW: the four Datadog metrics
+        this.scoringTime = Timer.builder("radar.scoring.time")
+            .description("Time to score one package")
+            .register(metrics);
+        this.packagesScored = Counter.builder("radar.packages.scored")
+            .description("Packages scored and acknowledged")
+            .register(metrics);
+        this.alertsRaised = Counter.builder("radar.alerts.raised")
+            .description("Alerts written to the database")
+            .register(metrics);
+        Gauge.builder("radar.queue.depth", queue, q -> q.depth())
+            .description("Messages waiting in the queue")
+            .register(metrics);
+
         log.info("scorer started");
     }
 
@@ -70,8 +97,9 @@ public class ScorerService {
 
         for (ReceivedMessage message : batch) {
             try {
-                score(message.payload());
+                scoringTime.record(() -> score(message.payload())); // NEW: timed
                 queue.acknowledge(message);
+                packagesScored.increment();                         // NEW
             } catch (Exception e) {
                 // Left unacknowledged on purpose: the queue will redeliver it.
                 log.error("failed to score {}: {}",
@@ -84,7 +112,7 @@ public class ScorerService {
         }
     }
 
-        private void score(PackageMessage pkg) {
+    private void score(PackageMessage pkg) {
         String normalized = Normalizer.normalize(pkg.name());
         alerts.recordObserved(pkg, normalized);
 
@@ -120,6 +148,7 @@ public class ScorerService {
 
         if (best != null) {
             alerts.saveAlert(best);
+            alertsRaised.increment(); // NEW
         }
     }
 
