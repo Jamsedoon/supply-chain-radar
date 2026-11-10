@@ -17,3 +17,8 @@ output "db_endpoint" {
   description = "Database address (host:port) for the app's DB_URL"
   value       = aws_db_instance.main.endpoint
 }
+
+output "alb_dns_name" {
+  description = "Public address of the backend"
+  value       = aws_lb.main.dns_name
+}
