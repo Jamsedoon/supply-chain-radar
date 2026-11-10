@@ -1,0 +1,63 @@
+{
+  "title": "Supply-Chain Radar",
+  "description": "Live health of the typosquat pipeline: collector -> SQS -> scorer -> RDS.",
+  "layout_type": "ordered",
+  "widgets": [
+    {
+      "definition": {
+        "title": "Queue depth (packages waiting in SQS)",
+        "type": "timeseries",
+        "requests": [
+          { "q": "max:radar.queue.depth{*}", "display_type": "line" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "Packages scored per minute",
+        "type": "timeseries",
+        "requests": [
+          { "q": "sum:radar.packages.scored{*}.as_count().rollup(sum, 60)", "display_type": "bars" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "Scoring time per package (ms): average and slowest 5%",
+        "type": "timeseries",
+        "requests": [
+          { "q": "avg:radar.scoring.time.avg{*}", "display_type": "line" },
+          { "q": "max:radar.scoring.time.95percentile{*}", "display_type": "line" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "Alerts raised (per 5 minutes)",
+        "type": "timeseries",
+        "requests": [
+          { "q": "sum:radar.alerts.raised{*}.as_count().rollup(sum, 300)", "display_type": "bars" }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "title": "Scorer tasks running",
+        "type": "query_value",
+        "requests": [
+          { "q": "count_not_null(avg:ecs.fargate.cpu.percent{role:scorer,container_name:app} by {task_arn})", "aggregator": "last" }
+        ],
+        "precision": 0
+      }
+    },
+    {
+      "definition": {
+        "title": "App CPU % by role",
+        "type": "timeseries",
+        "requests": [
+          { "q": "avg:ecs.fargate.cpu.percent{container_name:app} by {role}", "display_type": "line" }
+        ]
+      }
+    }
+  ]
+}
